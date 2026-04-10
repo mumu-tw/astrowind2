@@ -2,8 +2,19 @@
 title: 台灣測試|0410
 description: 測試文章啦
 publishDate: 2026-04-10
+
+# SEO
 image: ./joker.jpg
-tags: ['班服', '設計', '客製化']
+tags:
+  - title: '班服'
+    slug: 'school-uniform'
+  - title: '設計'
+    slug: 'design'
+category:
+  title: '客製化'
+  slug: 'custom'
+
+# 可選
 draft: false
 ---
 
