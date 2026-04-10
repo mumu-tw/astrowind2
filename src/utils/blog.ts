@@ -61,17 +61,17 @@ const getNormalizedPost = async (post: CollectionEntry<'post'>): Promise<Post> =
   const publishDate = new Date(rawPublishDate);
   const updateDate = rawUpdateDate ? new Date(rawUpdateDate) : undefined;
 
-const category = rawCategory
-  ? {
-      slug: rawCategory.slug,
-      title: rawCategory.title,
-    }
-  : undefined;
+  const category = rawCategory
+    ? {
+        slug: rawCategory.slug,
+        title: rawCategory.title,
+      }
+    : undefined;
 
-const tags = rawTags.map((tag) => ({
-  slug: tag.slug,
-  title: tag.title,
-}));
+  const tags = rawTags.map((tag) => ({
+    slug: tag.slug,
+    title: tag.title,
+  }));
 
   return {
     id: id,
