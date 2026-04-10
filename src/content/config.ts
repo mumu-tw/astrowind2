@@ -58,8 +58,20 @@ const postCollection = defineCollection({
       title: z.string(),
       excerpt: z.string().optional(),
       image: image().optional(), // ✅ 改為 image() 而非 z.string()
-      category: z.string().optional(),
-      tags: z.array(z.string()).optional(),
+      category: z
+        .object({
+          title: z.string(),
+          slug: z.string(),
+        })
+        .optional(),
+      tags: z
+        .array(
+          z.object({
+            title: z.string(),
+            slug: z.string(),
+          })
+        )
+        .optional(),
       author: z.string().optional(),
       metadata: metadataDefinition(),
     }),
