@@ -1,4 +1,5 @@
 ---
+
 ---
 
 <div id="toc-bar">
@@ -8,7 +9,7 @@
       <span id="toc-sep" class="toc-sep">›</span>
       <span id="toc-current"></span>
       <svg id="toc-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+        <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"></path>
       </svg>
     </button>
     <nav id="toc-list" aria-label="文章目錄"></nav>
@@ -121,7 +122,9 @@
     text-decoration: none;
     color: inherit;
     opacity: 0.6;
-    transition: opacity 0.15s, background 0.15s;
+    transition:
+      opacity 0.15s,
+      background 0.15s;
   }
 
   #toc-list a:hover {
@@ -178,8 +181,7 @@
     }
 
     // ── 3. 文章大標題（H1）──
-    const h1Text =
-      document.querySelector('article h1')?.textContent?.trim() ?? document.title.split(/[—|·]/)[0].trim();
+    const h1Text = document.querySelector('article h1')?.textContent?.trim() ?? document.title.split(/[—|·]/)[0].trim();
     if (titleEl) titleEl.textContent = h1Text ?? '';
 
     // ── 4. 確保 H2 有 id ──
