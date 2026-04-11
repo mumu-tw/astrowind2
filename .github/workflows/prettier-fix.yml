@@ -18,22 +18,14 @@ jobs:
 
       - run: npm ci
 
-      - run: npm run fix:prettier
+      - run: npx prettier --write src/components/blog/TableOfContents.astro
 
-      - name: Commit fixed files
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add -A
-          git diff --staged --quiet || git commit -m "style: auto prettier fix"
-          git push
- # 顯示 Prettier 改了哪些內容
       - run: git diff
 
       - name: Commit fixed files
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add -A
-          git diff --staged --quiet || git commit -m "style: auto prettier fix"
+          git add src/components/blog/TableOfContents.astro
+          git diff --staged --quiet || git commit -m "style: prettier fix TableOfContents"
           git push
