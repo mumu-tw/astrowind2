@@ -121,9 +121,7 @@
     text-decoration: none;
     color: inherit;
     opacity: 0.6;
-    transition:
-      opacity 0.15s,
-      background 0.15s;
+    transition: opacity 0.15s, background 0.15s;
   }
 
   #toc-list a:hover {
@@ -181,8 +179,7 @@
 
     // ── 3. 文章大標題（H1）──
     const h1Text =
-      document.querySelector('article h1')?.textContent?.trim() ??
-      document.title.split(/[—|·]/)[0].trim();
+      document.querySelector('article h1')?.textContent?.trim() ?? document.title.split(/[—|·]/)[0].trim();
     if (titleEl) titleEl.textContent = h1Text ?? '';
 
     // ── 4. 確保 H2 有 id ──
@@ -192,9 +189,7 @@
 
     // ── 5. 產生連結 ──
     if (list) {
-      list.innerHTML = h2s
-        .map((h) => `<a href="#${h.id}" data-id="${h.id}">${h.textContent?.trim()}</a>`)
-        .join('');
+      list.innerHTML = h2s.map((h) => `<a href="#${h.id}" data-id="${h.id}">${h.textContent?.trim()}</a>`).join('');
     }
 
     // ── 6. 初始狀態：沒讀到任何 H2 前，隱藏 sep & current ──
@@ -233,25 +228,22 @@
         const found = h2s.find((h) => h.id === currentId);
         if (found && currEl) {
           currEl.textContent = found.textContent?.trim() ?? '';
-          bar.classList.remove('collapsed'); // 顯示 sep & current
+          bar.classList.remove('collapsed');
         }
 
-        // active 樣式
         list?.querySelectorAll('a').forEach((a) => {
           a.classList.toggle('active', (a as HTMLAnchorElement).dataset.id === currentId);
         });
       },
       {
-        // H2 進入畫面上方 15% 時觸發，離開下方 75% 時結束
         rootMargin: '-15% 0px -75% 0px',
         threshold: 0,
-      },
+      }
     );
 
     h2s.forEach((h) => observer.observe(h));
   }
 
-  // View Transitions 相容（每次換頁重新初始化）
   document.addEventListener('astro:page-load', initTOC);
   initTOC();
 </script>
