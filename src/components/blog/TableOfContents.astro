@@ -8,7 +8,7 @@
       <span id="toc-sep" class="toc-sep">›</span>
       <span id="toc-current"></span>
       <svg id="toc-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
+        <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
       </svg>
     </button>
     <nav id="toc-list" aria-label="文章目錄"></nav>
@@ -121,7 +121,9 @@
     text-decoration: none;
     color: inherit;
     opacity: 0.6;
-    transition: opacity 0.15s, background 0.15s;
+    transition:
+      opacity 0.15s,
+      background 0.15s;
   }
 
   #toc-list a:hover {
@@ -144,12 +146,12 @@
 
 <script>
   function initTOC() {
-    const bar     = document.getElementById('toc-bar');
-    const toggle  = document.getElementById('toc-toggle');
+    const bar = document.getElementById('toc-bar');
+    const toggle = document.getElementById('toc-toggle');
     const titleEl = document.getElementById('toc-title');
-    const currEl  = document.getElementById('toc-current');
-    const list    = document.getElementById('toc-list');
-    const arrow   = document.getElementById('toc-arrow');
+    const currEl = document.getElementById('toc-current');
+    const list = document.getElementById('toc-list');
+    const arrow = document.getElementById('toc-arrow');
 
     if (!bar) return;
 
@@ -166,23 +168,32 @@
 
     // ── 2. 找 prose 容器和 H2 ──
     const prose = document.querySelector('article .prose, article [class*="prose"]');
-    if (!prose) { bar.style.display = 'none'; return; }
+    if (!prose) {
+      bar.style.display = 'none';
+      return;
+    }
 
     const h2s = Array.from(prose.querySelectorAll('h2'));
-    if (h2s.length === 0) { bar.style.display = 'none'; return; }
+    if (h2s.length === 0) {
+      bar.style.display = 'none';
+      return;
+    }
 
     // ── 3. 文章大標題（H1）──
-    const h1Text = document.querySelector('article h1')?.textContent?.trim()
-                ?? document.title.split(/[—|·]/)[0].trim();
+    const h1Text =
+      document.querySelector('article h1')?.textContent?.trim() ??
+      document.title.split(/[—|·]/)[0].trim();
     if (titleEl) titleEl.textContent = h1Text ?? '';
 
     // ── 4. 確保 H2 有 id ──
-    h2s.forEach((h, i) => { if (!h.id) h.id = `h2-${i}`; });
+    h2s.forEach((h, i) => {
+      if (!h.id) h.id = `h2-${i}`;
+    });
 
     // ── 5. 產生連結 ──
     if (list) {
       list.innerHTML = h2s
-        .map(h => `<a href="#${h.id}" data-id="${h.id}">${h.textContent?.trim()}</a>`)
+        .map((h) => `<a href="#${h.id}" data-id="${h.id}">${h.textContent?.trim()}</a>`)
         .join('');
     }
 
@@ -199,7 +210,7 @@
       toggle.setAttribute('aria-expanded', String(isOpen));
     });
 
-    list?.querySelectorAll('a').forEach(a => {
+    list?.querySelectorAll('a').forEach((a) => {
       a.addEventListener('click', () => {
         isOpen = false;
         list!.classList.remove('open');
@@ -211,30 +222,33 @@
     // ── 8. IntersectionObserver 追蹤目前 H2 ──
     let currentId = '';
 
-    const observer = new IntersectionObserver(entries => {
-      for (const entry of entries) {
-        if (entry.isIntersecting) {
-          currentId = entry.target.id;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            currentId = entry.target.id;
+          }
         }
-      }
 
-      const found = h2s.find(h => h.id === currentId);
-      if (found && currEl) {
-        currEl.textContent = found.textContent?.trim() ?? '';
-        bar.classList.remove('collapsed'); // 顯示 sep & current
-      }
+        const found = h2s.find((h) => h.id === currentId);
+        if (found && currEl) {
+          currEl.textContent = found.textContent?.trim() ?? '';
+          bar.classList.remove('collapsed'); // 顯示 sep & current
+        }
 
-      // active 樣式
-      list?.querySelectorAll('a').forEach(a => {
-        a.classList.toggle('active', (a as HTMLAnchorElement).dataset.id === currentId);
-      });
-    }, {
-      // H2 進入畫面上方 15% 時觸發，離開下方 75% 時結束
-      rootMargin: '-15% 0px -75% 0px',
-      threshold: 0,
-    });
+        // active 樣式
+        list?.querySelectorAll('a').forEach((a) => {
+          a.classList.toggle('active', (a as HTMLAnchorElement).dataset.id === currentId);
+        });
+      },
+      {
+        // H2 進入畫面上方 15% 時觸發，離開下方 75% 時結束
+        rootMargin: '-15% 0px -75% 0px',
+        threshold: 0,
+      },
+    );
 
-    h2s.forEach(h => observer.observe(h));
+    h2s.forEach((h) => observer.observe(h));
   }
 
   // View Transitions 相容（每次換頁重新初始化）
