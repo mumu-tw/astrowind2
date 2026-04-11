@@ -1,5 +1,4 @@
 ---
-
 ---
 
 <div id="toc-bar">
@@ -34,7 +33,7 @@
   }
 
   .toc-inner {
-    max-width: 48rem; /* 配合文章 max-w-3xl */
+    max-width: 48rem;
     margin-inline: auto;
     padding-inline: 1.5rem;
   }
@@ -95,7 +94,6 @@
     transform: rotate(180deg);
   }
 
-  /* 收合時隱藏 sep 和 current */
   #toc-bar.collapsed #toc-sep,
   #toc-bar.collapsed #toc-current {
     display: none;
@@ -156,7 +154,6 @@
 
     if (!bar) return;
 
-    // ── 1. TOC 位置：跟著 sticky Header ──
     const header = document.getElementById('header') ?? document.querySelector('header');
 
     function syncTop() {
@@ -167,7 +164,6 @@
     window.addEventListener('scroll', syncTop, { passive: true });
     window.addEventListener('resize', syncTop, { passive: true });
 
-    // ── 2. 找 prose 容器和 H2 ──
     const prose = document.querySelector('article .prose, article [class*="prose"]');
     if (!prose) {
       bar.style.display = 'none';
@@ -180,27 +176,21 @@
       return;
     }
 
-    // ── 3. 文章大標題（H1）──
-    const h1Text =
-      document.querySelector('article h1')?.textContent?.trim() ?? document.title.split(/[—|·]/)[0].trim();
-    if (titleEl) titleEl.textContent = h1Text ?? '';
+    const h1 = document.querySelector('article h1');
+    const h1Text = h1?.textContent?.trim() ?? document.title.split(/[—|·]/)[0].trim();
+    if (titleEl) titleEl.textContent = h1Text;
 
-    // ── 4. 確保 H2 有 id ──
     h2s.forEach((h, i) => {
       if (!h.id) h.id = `h2-${i}`;
     });
 
-    // ── 5. 產生連結 ──
     if (list) {
       list.innerHTML = h2s.map((h) => `<a href="#${h.id}" data-id="${h.id}">${h.textContent?.trim()}</a>`).join('');
     }
 
-    // ── 6. 初始狀態：沒讀到任何 H2 前，隱藏 sep & current ──
     bar.classList.add('collapsed');
 
-    // ── 7. 展開 / 收合 ──
     let isOpen = false;
-
     toggle?.addEventListener('click', () => {
       isOpen = !isOpen;
       list?.classList.toggle('open', isOpen);
@@ -217,9 +207,7 @@
       });
     });
 
-    // ── 8. IntersectionObserver 追蹤目前 H2 ──
     let currentId = '';
-
     const observer = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) {
@@ -238,10 +226,7 @@
           a.classList.toggle('active', (a as HTMLAnchorElement).dataset.id === currentId);
         });
       },
-      {
-        rootMargin: '-15% 0px -75% 0px',
-        threshold: 0,
-      }
+      { rootMargin: '-15% 0px -75% 0px', threshold: 0 }
     );
 
     h2s.forEach((h) => observer.observe(h));
